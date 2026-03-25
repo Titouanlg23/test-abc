@@ -1,33 +1,105 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black;color:lime;font-family:monospace">
+<head>
+<meta charset="UTF-8">
+<title>Analyse système</title>
 
-<h2>Analyse du système...</h2>
+<style>
+body{
+ background:black;
+ color:lime;
+ font-family:monospace;
+ padding:20px;
+}
 
-<p id="text"></p>
+#terminal{
+ white-space:pre-line;
+}
+
+#progressbar{
+ width:100%;
+ background:#111;
+ border:1px solid lime;
+ margin-top:20px;
+}
+
+#bar{
+ width:0%;
+ height:20px;
+ background:lime;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Initialisation du module d'analyse...</h2>
+
+<div id="terminal"></div>
+
+<div id="progressbar">
+<div id="bar"></div>
+</div>
 
 <script>
+
+let terminal = document.getElementById("terminal");
+let bar = document.getElementById("bar");
+
 let messages = [
 "Connexion au serveur sécurisé...",
-"Analyse des données...",
-"Accès aux fichiers système...",
-"Extraction des mots de passe...",
+"Analyse de l'appareil détecté...",
+"Identification du système...",
+"Appareil : " + navigator.userAgent,
+"Recherche de données sensibles...",
+"Analyse des photos...",
+"Analyse des contacts...",
+"Extraction des mots de passe WiFi...",
+"Accès au microphone...",
 "Transmission des données...",
-"Accès administrateur obtenu.",
-"et non c'était une petite blague",
+"Accès administrateur obtenu..."
 ];
 
 let i = 0;
+let progress = 0;
+
+function typeLine(text, callback){
+ let j = 0;
+ let interval = setInterval(()=>{
+  terminal.innerHTML += text[j];
+  j++;
+  if(j >= text.length){
+   clearInterval(interval);
+   terminal.innerHTML += "<br>";
+   setTimeout(callback,500);
+  }
+ },30);
+}
 
 function next(){
  if(i < messages.length){
-  document.getElementById("text").innerHTML += messages[i] + "<br>";
-  i++;
-  setTimeout(next,1500);
+  typeLine(messages[i], ()=>{
+   progress += 10;
+   bar.style.width = progress + "%";
+   i++;
+   next();
+  });
+ }else{
+  setTimeout(()=>{
+   terminal.innerHTML += "<br>⚠️ SYSTEME COMPROMIS DETECTE<br>";
+   terminal.innerHTML += "Téléchargement terminé...<br><br>";
+   
+   setTimeout(()=>{
+    terminal.innerHTML += "😄 Relax ! C'était juste une blague.<br>";
+    terminal.innerHTML += "Aucune donnée n'a été copiée.";
+   },2000);
+
+  },1000);
  }
 }
 
 next();
+
 </script>
 
 </body>
