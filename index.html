@@ -10,6 +10,11 @@ body{
  color:lime;
  font-family:monospace;
  padding:20px;
+ font-size:22px; /* texte plus gros */
+}
+
+h2{
+ font-size:28px;
 }
 
 #terminal{
@@ -19,13 +24,13 @@ body{
 #progressbar{
  width:100%;
  background:#111;
- border:1px solid lime;
+ border:2px solid lime;
  margin-top:20px;
 }
 
 #bar{
  width:0%;
- height:20px;
+ height:25px;
  background:lime;
 }
 </style>
@@ -71,9 +76,9 @@ function typeLine(text, callback){
   if(j >= text.length){
    clearInterval(interval);
    terminal.innerHTML += "<br>";
-   setTimeout(callback,500);
+   setTimeout(callback,300);
   }
- },30);
+ },15); /* écriture plus rapide */
 }
 
 function next(){
@@ -92,9 +97,9 @@ function next(){
    setTimeout(()=>{
     terminal.innerHTML += "😄 Relax ! C'était juste une blague.<br>";
     terminal.innerHTML += "Aucune donnée n'a été copiée.";
-   },2000);
+   },1500);
 
-  },1000);
+  },800);
  }
 }
 
