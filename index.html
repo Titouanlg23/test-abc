@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:lime;font-family:monospace">
+
+<h2>Analyse du système...</h2>
+
+<p id="text"></p>
+
+<script>
+let messages = [
+"Connexion au serveur sécurisé...",
+"Analyse des données...",
+"Accès aux fichiers système...",
+"Extraction des mots de passe...",
+"Transmission des données...",
+"Accès administrateur obtenu."
+];
+
+let i = 0;
+
+function next(){
+ if(i < messages.length){
+  document.getElementById("text").innerHTML += messages[i] + "<br>";
+  i++;
+  setTimeout(next,1500);
+ }
+}
+
+next();
+</script>
+
+</body>
+</html>
