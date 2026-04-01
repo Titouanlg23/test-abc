@@ -10,11 +10,11 @@ body{
  color:lime;
  font-family:monospace;
  padding:20px;
- font-size:22px; /* texte plus gros */
+ font-size:24px;
 }
 
 h2{
- font-size:28px;
+ font-size:32px;
 }
 
 #terminal{
@@ -30,13 +30,19 @@ h2{
 
 #bar{
  width:0%;
- height:25px;
+ height:30px;
  background:lime;
+}
+
+#countdown{
+ font-size:40px;
+ color:red;
+ margin-top:20px;
 }
 </style>
 </head>
 
-<body>
+<body onclick="document.documentElement.requestFullscreen()">
 
 <h2>Initialisation du module d'analyse...</h2>
 
@@ -46,10 +52,13 @@ h2{
 <div id="bar"></div>
 </div>
 
+<div id="countdown"></div>
+
 <script>
 
 let terminal = document.getElementById("terminal");
 let bar = document.getElementById("bar");
+let countdown = document.getElementById("countdown");
 
 let messages = [
 "Connexion au serveur sécurisé...",
@@ -68,6 +77,12 @@ let messages = [
 let i = 0;
 let progress = 0;
 
+function vibrate(){
+ if(navigator.vibrate){
+  navigator.vibrate(200);
+ }
+}
+
 function typeLine(text, callback){
  let j = 0;
  let interval = setInterval(()=>{
@@ -76,13 +91,14 @@ function typeLine(text, callback){
   if(j >= text.length){
    clearInterval(interval);
    terminal.innerHTML += "<br>";
-   setTimeout(callback,300);
+   setTimeout(callback,150);
   }
- },15); /* écriture plus rapide */
+ },5); /* écriture très rapide */
 }
 
 function next(){
  if(i < messages.length){
+  vibrate();
   typeLine(messages[i], ()=>{
    progress += 10;
    bar.style.width = progress + "%";
@@ -90,17 +106,35 @@ function next(){
    next();
   });
  }else{
-  setTimeout(()=>{
-   terminal.innerHTML += "<br>⚠️ SYSTEME COMPROMIS DETECTE<br>";
-   terminal.innerHTML += "Téléchargement terminé...<br><br>";
-   
-   setTimeout(()=>{
-    terminal.innerHTML += "😄 Relax ! C'était juste une blague.<br>";
-    terminal.innerHTML += "Aucune donnée n'a été copiée.";
-   },1500);
-
-  },800);
+  setTimeout(startCountdown,500);
  }
+}
+
+function startCountdown(){
+
+ terminal.innerHTML += "<br>⚠️ VIRUS DETECTE ⚠️<br>";
+ terminal.innerHTML += "Suppression des données dans :<br>";
+
+ let time = 10;
+
+ countdown.innerHTML = time;
+
+ let timer = setInterval(()=>{
+
+  vibrate();
+
+  time--;
+  countdown.innerHTML = time;
+
+  if(time <= 0){
+   clearInterval(timer);
+
+   countdown.innerHTML = "";
+   terminal.innerHTML += "<br>😄 Relax ! C'était une blague.<br>";
+   terminal.innerHTML += "Aucune donnée n'a été copiée.";
+  }
+
+ },1000);
 }
 
 next();
